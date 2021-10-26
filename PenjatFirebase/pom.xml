@@ -12,6 +12,13 @@
             <artifactId>firebase-admin</artifactId>
             <version>8.1.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-auth 
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-auth</artifactId>
+            <version>21.0.1</version>
+        </dependency>-->
+
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

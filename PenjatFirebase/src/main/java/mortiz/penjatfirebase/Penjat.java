@@ -1,71 +1,36 @@
 package mortiz.penjatfirebase;
 
-import com.google.api.core.ApiFuture;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.FirestoreClient;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import jdk.nashorn.internal.runtime.JSType;
 
 
 /**
  *
  * @author Marc Ortiz Burgos
  */
-public class ConexionFirebase {
+public class Penjat {
     
-    static Firestore db;
-    
-    public static void conectar() throws IOException{
-        FileInputStream serviceAccount = new FileInputStream("fir-penjat-firebase.json");
-        FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
-        FirebaseApp.initializeApp(options);
-        db = FirestoreClient.getFirestore();
-        System.out.println("S'ha conectat amb exit");
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int acerts = 0, intents = 7;
+        String[] paraules = new String[]{"llapis", "goma", "llibreta", "mestre", "examen", "mates"};
+        
+        benvinguda();
+        joc(acerts, intents,paraules);
     }
     
-    public static void main(String[] args) throws InterruptedException, ExecutionException{
-        try{
-            conectar();
-        }catch(Exception e){
-            System.out.println("Va haver-hi un error en la connexió");
-        }
-        
-        System.out.println(leerplantilla().get("paraules"));
-        //leerjocs();
-        //leerplantilla();
-        System.out.println(paraulaRandom(leerplantilla().get("paraules").toString()));
+    public static void benvinguda (){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Benvingut al penjat!");
+        System.out.println("Pulsa ENTER per començar");
+        in.nextLine();
     }
     
-    
-    public static String paraulaRandom (String paraules){
-        
-        String replace = paraules.replace("[","");
-        String replace1 = replace.replace("]","");
-        ArrayList<String> myList = new ArrayList<String>(Arrays.asList(replace1.split(", ")));
-        
+    public static String paraulaRandom (String[] paraules){
         Random rand = new Random();
         int val = rand.nextInt(6);
-        return myList.get(val);
+        return paraules[val];
     }
-    
     
     public static void joc (int acerts, int intents, String[] paraules){
         Scanner in = new Scanner(System.in);
@@ -175,46 +140,4 @@ public class ConexionFirebase {
         }while(joc);
     }
     
-    public static void create()throws InterruptedException, ExecutionException{
-        CollectionReference docRef = db.collection("jocs");
-        
-        Map<String, Object> data = new HashMap<>();
-        data.put("acerts", leerplantilla().get("acerts"));
-        data.put("adivinar", "");
-        data.put("intents", leerplantilla().get("intents"));
-        data.put("paraula", paraulaRandom(leerplantilla().get("paraules").toString()));
-
-        ApiFuture<DocumentReference> result = docRef.add(data);
-        System.out.println("Update time : " + result.get());
-    }
-    
-    
-    public static void leerjocs() throws InterruptedException, ExecutionException{
-        
-        ApiFuture<QuerySnapshot> query = db.collection("jocs").get();
-        QuerySnapshot querySnapshot = query.get();
-        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-        
-        for (QueryDocumentSnapshot document : documents) {
-          System.out.println("Acerts: " + document.getDouble("acerts"));
-          System.out.println("Adivinar: " + document.getString("adivinar"));
-          System.out.println("Intents: " + document.getDouble("intents"));
-          System.out.println("Paraula: " + document.getString("paraula"));
-        }
-    }
-    
-    public static DocumentSnapshot leerplantilla() throws InterruptedException, ExecutionException{
-        
-        ApiFuture<DocumentSnapshot> query = db.collection("plantilla").document("penjat").get();
-        DocumentSnapshot querySnapshot = query.get();
-        
-        //System.out.println("Acerts: " + querySnapshot.get("acerts"));
-        //System.out.println("Adivinar: " + querySnapshot.get("intents"));
-        //System.out.println("Paraula: " + querySnapshot.get("paraules"));
-        //System.out.println(querySnapshot.get("paraules"));
-        
-        //System.out.println(paraulaRandom(querySnapshot.get("paraules")));
-        
-        return querySnapshot;
-    }
 }
