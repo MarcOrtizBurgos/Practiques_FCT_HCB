@@ -12,6 +12,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.DatabaseReference;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,42 +43,31 @@ public class ConexionFirebase {
     }
     
     public static void main(String[] args) throws InterruptedException, ExecutionException{
+        Scanner in = new Scanner(System.in);
         try{
             conectar();
         }catch(Exception e){
             System.out.println("Va haver-hi un error en la connexió");
         }
         
-        System.out.println(leerplantilla().get("paraules"));
-        //leerjocs();
-        //leerplantilla();
-        System.out.println(paraulaRandom(leerplantilla().get("paraules").toString()));
+        joc();
     }
     
-    
-    public static String paraulaRandom (String paraules){
-        
-        String replace = paraules.replace("[","");
-        String replace1 = replace.replace("]","");
-        ArrayList<String> myList = new ArrayList<String>(Arrays.asList(replace1.split(", ")));
-        
-        Random rand = new Random();
-        int val = rand.nextInt(6);
-        return myList.get(val);
-    }
-    
-    
-    public static void joc (int acerts, int intents, String[] paraules){
+    public static void joc () throws InterruptedException, ExecutionException{
         Scanner in = new Scanner(System.in);
         
         boolean joc = true;
         
         //Do while del joc senser si es compleix la condició finalitza el joc
         do{
+            String nomp;
+            System.out.println("Escriu com vols que es digui la teva partida: ");
+            nomp = in.nextLine();
+            System.out.println(create(nomp).getId());
             //booleans dels do while de funcio del joc i de preguntar per jugar de nou
             boolean fin = false, altre = false;
             //Escull paraula random de l'array.
-            String paraula = paraulaRandom(paraules);
+            String paraula = leerjoc(nomp).get("paraula").toString();
             //Array de les lletras de la paraula.
             String[] ArraySep = paraula.split("");
             //Array buit amb la longitud del primer array amb la paraula.
@@ -92,17 +82,22 @@ public class ConexionFirebase {
             do{
                 
                 boolean rep = false;
-                
-                if(intents == 0){
+                /*System.out.println(leerjoc(nomp).get("intents"));
+                System.out.println(leerjoc(nomp).get("intents").getClass());
+                System.out.println(leerjoc(nomp).get("intents").hashCode());
+                System.out.println(leerjoc(nomp).get("intents").toString());
+                int pepe = (int) leerjoc(nomp).get("intents").hashCode();
+                System.out.println(pepe);*/
+                if((int) leerjoc(nomp).get("intents").hashCode() == 0){
                     System.out.println("Has perdut :( , la teva paraula era "+paraula);
                     fin = true;
                 }
-                else if(acerts == ArraySep.length){
+                else if((int) leerjoc(nomp).get("acerts").hashCode() == ArraySep.length){
                     System.out.println("Has guanyat! :) , la paraula es "+paraula);
                     fin = true;
                 }
                 else{
-                    System.out.println("Acerts: "+acerts+" || Intents: "+intents);
+                    System.out.println("Acerts: "+(int) leerjoc(nomp).get("acerts").hashCode()+" || Intents: "+(int) leerjoc(nomp).get("intents").hashCode());
 
                     //Imprimeix l'array amb les lletres ocultes.
                     for (int i = 0; i < ArraySep.length; i++){
@@ -143,12 +138,12 @@ public class ConexionFirebase {
                                 if(ArraySep[x].contains(lletra)){
                                     ArrayCon[x] = lletra;
                                     check = true;
-                                    acerts++;
+                                    update(nomp,(int)leerjoc(nomp).get("intents").hashCode(),(int)leerjoc(nomp).get("acerts").hashCode()+1);
                                 }
                             }
                             //Si no coincideix ninguna lletra et treu un intent.
                             if(!check){
-                                intents--;
+                                update(nomp,(int)leerjoc(nomp).get("intents").hashCode()-1,(int)leerjoc(nomp).get("acerts").hashCode());
                             }
                         }
                     }
@@ -160,8 +155,6 @@ public class ConexionFirebase {
                 System.out.println("Vols tornar a jugar? S / N");
                 String resp = in.nextLine().toUpperCase();
                 if(resp.equals("S")){
-                    intents = 7;
-                    acerts = 0;
                     altre = true;
                     System.out.println("\n\n\n\n\n");
                 }
@@ -175,8 +168,31 @@ public class ConexionFirebase {
         }while(joc);
     }
     
-    public static void create()throws InterruptedException, ExecutionException{
-        CollectionReference docRef = db.collection("jocs");
+    public static String paraulaRandom (String paraules){
+        
+        String replace = paraules.replace("[","");
+        String replace1 = replace.replace("]","");
+        ArrayList<String> myList = new ArrayList<String>(Arrays.asList(replace1.split(", ")));
+        
+        Random rand = new Random();
+        int val = rand.nextInt(6);
+        return myList.get(val);
+    }
+    
+    public static DocumentReference update(String id,int intents,int acerts)throws InterruptedException, ExecutionException{
+        DocumentReference docRef = db.collection("jocs").document(id);
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("acerts", acerts);
+        data.put("intents", intents);
+
+        ApiFuture<WriteResult> result = docRef.update(data);
+        
+        return docRef;
+    }
+    
+    public static DocumentReference create(String id)throws InterruptedException, ExecutionException{
+        DocumentReference docRef = db.collection("jocs").document(id);
         
         Map<String, Object> data = new HashMap<>();
         data.put("acerts", leerplantilla().get("acerts"));
@@ -184,23 +200,18 @@ public class ConexionFirebase {
         data.put("intents", leerplantilla().get("intents"));
         data.put("paraula", paraulaRandom(leerplantilla().get("paraules").toString()));
 
-        ApiFuture<DocumentReference> result = docRef.add(data);
-        System.out.println("Update time : " + result.get());
+        ApiFuture<WriteResult> result = docRef.set(data);
+        
+        return docRef;
     }
     
     
-    public static void leerjocs() throws InterruptedException, ExecutionException{
+    public static DocumentSnapshot leerjoc(String id) throws InterruptedException, ExecutionException{
         
-        ApiFuture<QuerySnapshot> query = db.collection("jocs").get();
-        QuerySnapshot querySnapshot = query.get();
-        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        ApiFuture<DocumentSnapshot> query = db.collection("jocs").document(id).get();
+        DocumentSnapshot querySnapshot = query.get();
         
-        for (QueryDocumentSnapshot document : documents) {
-          System.out.println("Acerts: " + document.getDouble("acerts"));
-          System.out.println("Adivinar: " + document.getString("adivinar"));
-          System.out.println("Intents: " + document.getDouble("intents"));
-          System.out.println("Paraula: " + document.getString("paraula"));
-        }
+        return querySnapshot;
     }
     
     public static DocumentSnapshot leerplantilla() throws InterruptedException, ExecutionException{
@@ -208,13 +219,7 @@ public class ConexionFirebase {
         ApiFuture<DocumentSnapshot> query = db.collection("plantilla").document("penjat").get();
         DocumentSnapshot querySnapshot = query.get();
         
-        //System.out.println("Acerts: " + querySnapshot.get("acerts"));
-        //System.out.println("Adivinar: " + querySnapshot.get("intents"));
-        //System.out.println("Paraula: " + querySnapshot.get("paraules"));
-        //System.out.println(querySnapshot.get("paraules"));
-        
-        //System.out.println(paraulaRandom(querySnapshot.get("paraules")));
-        
         return querySnapshot;
     }
+    
 }
