@@ -61,13 +61,11 @@ public class ConexionFirebase {
         //Do while del joc senser si es compleix la condició finalitza el joc
         do{
             String nomp;
-            System.out.println("Escriu com vols que es digui la teva partida: ");
-            nomp = in.nextLine();
-            System.out.println(create(nomp).getId());
+            nomp = comprovajoc();
             //booleans dels do while de funcio del joc i de preguntar per jugar de nou
             boolean fin = false, altre = false;
             //Escull paraula random de l'array.
-            String paraula = leerjoc(nomp).get("paraula").toString();
+            String paraula = (String) leerjoc(nomp).get("paraula").toString();
             //Array de les lletras de la paraula.
             String[] ArraySep = paraula.split("");
             //Array buit amb la longitud del primer array amb la paraula.
@@ -82,12 +80,7 @@ public class ConexionFirebase {
             do{
                 
                 boolean rep = false;
-                /*System.out.println(leerjoc(nomp).get("intents"));
-                System.out.println(leerjoc(nomp).get("intents").getClass());
-                System.out.println(leerjoc(nomp).get("intents").hashCode());
-                System.out.println(leerjoc(nomp).get("intents").toString());
-                int pepe = (int) leerjoc(nomp).get("intents").hashCode();
-                System.out.println(pepe);*/
+                
                 if((int) leerjoc(nomp).get("intents").hashCode() == 0){
                     System.out.println("Has perdut :( , la teva paraula era "+paraula);
                     fin = true;
@@ -152,7 +145,7 @@ public class ConexionFirebase {
             
             //Do while per preguntar si vols tornar a jugar.
             do{
-                System.out.println("Vols tornar a jugar? S / N");
+                System.out.println("Vols jugar una altra partida? S / N");
                 String resp = in.nextLine().toUpperCase();
                 if(resp.equals("S")){
                     altre = true;
@@ -191,7 +184,7 @@ public class ConexionFirebase {
         return docRef;
     }
     
-    public static DocumentReference create(String id)throws InterruptedException, ExecutionException{
+    public static void create(String id)throws InterruptedException, ExecutionException{
         DocumentReference docRef = db.collection("jocs").document(id);
         
         Map<String, Object> data = new HashMap<>();
@@ -201,8 +194,6 @@ public class ConexionFirebase {
         data.put("paraula", paraulaRandom(leerplantilla().get("paraules").toString()));
 
         ApiFuture<WriteResult> result = docRef.set(data);
-        
-        return docRef;
     }
     
     
@@ -220,6 +211,40 @@ public class ConexionFirebase {
         DocumentSnapshot querySnapshot = query.get();
         
         return querySnapshot;
+    }
+    
+    public static boolean leerpartidas(String nomp) throws InterruptedException, ExecutionException{
+        
+        ApiFuture<QuerySnapshot> query = db.collection("jocs").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        boolean existe = false;
+        for (QueryDocumentSnapshot document : documents) {
+            if(nomp.equals(document.getId())){
+                existe = true;
+            }
+        }
+        return existe;
+        
+    }
+    
+    public static String comprovajoc() throws InterruptedException, ExecutionException{
+        Scanner in = new Scanner(System.in);
+        String nomp;
+        boolean exit = false;
+        do{
+            System.out.println("Escriu com vols que es digui la teva partida: ");
+            nomp = in.nextLine();
+            if(leerpartidas(nomp)){
+                System.out.println("Aquesta partida ja existeix torna a provar.");
+            }
+            else{
+                create(nomp);
+                exit = true;
+            }
+        }while(!exit);
+        
+        return nomp;
     }
     
 }
