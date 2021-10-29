@@ -193,7 +193,7 @@ public class ConexionFirebase {
         Map<String, Object> data = new HashMap<>();
         data.put("acerts", acerts);
         data.put("intents", intents);
-        data.put("adivina", adivina);
+        data.put("adivinar", adivina);
         ApiFuture<WriteResult> result = docRef.update(data);
         return docRef;
     }
