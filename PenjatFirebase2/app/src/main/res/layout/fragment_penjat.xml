@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textUsuari"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginBottom="102dp"
+        android:text="@string/usuari"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonTanca"
+        android:layout_width="254dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/tanca"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonA" />
+
+    <Button
+        android:id="@+id/buttonN"
+        android:layout_width="243dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/PartidaN"
+        app:layout_constraintBottom_toTopOf="@+id/buttonA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textUsuari" />
+
+    <Button
+        android:id="@+id/buttonA"
+        android:layout_width="245dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="327dp"
+        android:text="@string/PartidaA"
+        app:layout_constraintBottom_toTopOf="@+id/buttonTanca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonN" />
+</androidx.constraintlayout.widget.ConstraintLayout>
