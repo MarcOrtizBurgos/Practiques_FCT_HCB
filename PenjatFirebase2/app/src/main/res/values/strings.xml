@@ -13,4 +13,5 @@
     <string name="paraules"><b>Paraula</b></string>
     <string name="lletra"><b>Escriu una lletra</b></string>
     <string name="enviar">Enviar</string>
+    <string name="nom_partida">Nom partida</string>
 </resources>

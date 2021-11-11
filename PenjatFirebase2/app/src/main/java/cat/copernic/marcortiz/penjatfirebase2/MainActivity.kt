@@ -25,10 +25,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setup(){
-        title = "Autenticatió"
+        title = "Autentificació"
         buttonRegistre.setOnClickListener{
-            println(editUsuari.text.toString())
-            println(editClau.text.toString())
             if(editUsuari.text.isNotEmpty() && editClau.text.isNotEmpty()){
                 FirebaseAuth.getInstance()
                     .createUserWithEmailAndPassword(editUsuari.text.toString(),
