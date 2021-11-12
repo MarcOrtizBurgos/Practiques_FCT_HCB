@@ -58,9 +58,9 @@
         android:layout_marginStart="82dp"
         android:layout_marginEnd="82dp"
         android:text="@string/paraules"
-        app:layout_constraintBottom_toTopOf="@+id/paraula"
+        app:layout_constraintBottom_toTopOf="@+id/paraulatext"
         app:layout_constraintEnd_toEndOf="@+id/acerts"
-        app:layout_constraintStart_toStartOf="@+id/paraula" />
+        app:layout_constraintStart_toStartOf="@+id/paraulatext" />
 
     <EditText
         android:id="@+id/editLletra"
@@ -86,7 +86,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/paraula"
+        android:id="@+id/paraulatext"
         android:layout_width="216dp"
         android:layout_height="35dp"
         android:layout_marginTop="34dp"
