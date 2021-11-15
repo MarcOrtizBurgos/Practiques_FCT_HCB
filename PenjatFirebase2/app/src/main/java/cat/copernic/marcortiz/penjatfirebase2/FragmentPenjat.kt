@@ -3,6 +3,7 @@ package cat.copernic.marcortiz.penjatfirebase2
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -37,12 +38,18 @@ class FragmentPenjat : AppCompatActivity() {
             partida = editpartida.text.toString()
 
             create(partida,"marc")
+            println("Partida echa")
 
             val nouIntent : Intent = Intent(this,JocActivity::class.java).apply {
                 putExtra("email",email)
                 putExtra("partida",partida)
             }
-            startActivity(nouIntent)
+            Handler().postDelayed(
+                {
+                    startActivity(nouIntent)
+                },
+                10000 // value in milliseconds
+            )
         }
 
         buttonA.setOnClickListener{
@@ -97,7 +104,6 @@ class FragmentPenjat : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents.", exception)
             }
-
     }
 
 }

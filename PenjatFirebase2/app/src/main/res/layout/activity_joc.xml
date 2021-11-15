@@ -128,10 +128,10 @@
         android:layout_width="217dp"
         android:layout_height="135dp"
         android:layout_marginTop="127dp"
-        android:background="@drawable/ahorcado_1_png"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ahorcado_1_png" />
 
     <TextView
         android:id="@+id/textpartida"
