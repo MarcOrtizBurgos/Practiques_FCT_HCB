@@ -35,17 +35,16 @@ class FragmentPenjat : AppCompatActivity() {
         val email = bundle?.getString("email")
         var partida = ""
 
-        buttonN.setOnClickListener{
+        buttonN.setOnClickListener {
             partida = editpartida.text.toString()
-
-            create(partida,"marc",partida.toString(),email.toString())
+            create(partida, "marc", partida.toString(), email.toString())
         }
 
-        buttonA.setOnClickListener{
+        buttonA.setOnClickListener {
             partida = editpartida.text.toString()
-            val nouIntent : Intent = Intent(this,JocActivity::class.java).apply {
-                putExtra("email",email)
-                putExtra("partida",partida)
+            val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
+                putExtra("email", email)
+                putExtra("partida", partida)
             }
             startActivity(nouIntent)
         }
@@ -53,11 +52,11 @@ class FragmentPenjat : AppCompatActivity() {
         setup(email ?: "")
     }
 
-    private fun setup(email : String){
+    private fun setup(email: String) {
         title = "Penjat"
         textUsuari.text = email
 
-        buttonTanca.setOnClickListener{
+        buttonTanca.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             onBackPressed()
         }
@@ -75,24 +74,22 @@ class FragmentPenjat : AppCompatActivity() {
 
     //Crea una nova partida a la base de dades
     @Throws(InterruptedException::class, ExecutionException::class)
-    private fun create(id: String?, usuari: String?,partida : String,email : String) {
+    private fun create(id: String?, usuari: String?, partida: String, email: String) {
         db.collection("jocs")
             .get()
             .addOnSuccessListener { doc ->
                 var bol = false
-                for (i in doc){
-                    println("Primera "+i.id)
-                    println("Primera "+editpartida.text.toString())
-                    if (i.id.toString().equals(editpartida.text.toString())){
+                for (i in doc) {
+                    if (i.id.toString().equals(editpartida.text.toString())) {
                         bol = true
                     }
                 }
-                println("Segona "+bol)
-                if(!bol){
+
+                if (!bol) {
                     db.collection("plantilla").document("penjat")
                         .get()
                         .addOnSuccessListener { result ->
-                            val docRef: DocumentReference = db.collection("jocs").document(id?:"")
+                            val docRef: DocumentReference = db.collection("jocs").document(id ?: "")
                             val data: MutableMap<String, Any?> = HashMap()
                             data["acerts"] = result["acerts"].hashCode()
                             data["adivinar"] = ""
@@ -100,26 +97,21 @@ class FragmentPenjat : AppCompatActivity() {
                             data["paraula"] = paraulaRandom(result["paraules"].toString()).toString()
                             data["state"] = false
                             data["estatjoc"] = ""
-                            data["usuari"] = usuari?:""
+                            data["usuari"] = usuari ?: ""
                             docRef.set(data)
 
-                            val nouIntent : Intent = Intent(this,JocActivity::class.java).apply {
-                                putExtra("email",email)
-                                putExtra("partida",partida)
+                            val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
+                                putExtra("email", email)
+                                putExtra("partida", partida)
                             }
-                            Handler().postDelayed(
-                                {
-                                    startActivity(nouIntent)
-                                },
-                                1000
-                            )
+
+                            startActivity(nouIntent)
                         }
                         .addOnFailureListener { exception ->
                             Log.w(ContentValues.TAG, "Error getting documents.", exception)
                         }
-                }
-                else{
-                    alert("Error","Aquesta partida ja esta feta")
+                } else {
+                    alert("Error", "Aquesta partida ja esta feta")
                 }
             }
             .addOnFailureListener { exception ->
@@ -127,7 +119,7 @@ class FragmentPenjat : AppCompatActivity() {
             }
     }
 
-    private fun alert(title : String,alert : String){
+    private fun alert(title: String, alert: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(alert)
