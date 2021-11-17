@@ -14,9 +14,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import java.util.*
 import java.util.concurrent.ExecutionException
-
 import com.google.firebase.firestore.DocumentSnapshot
-
 
 class JocActivity : AppCompatActivity() {
 
@@ -129,24 +127,11 @@ class JocActivity : AppCompatActivity() {
         var checko = false
 
         if (rep) {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Error")
-            builder.setMessage("Aquest caracter ja l'has posat")
-            builder.setPositiveButton("Aceptar", null)
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+            alert("Error","Aquest caracter ja l'has posat")
         } else {
             //Si es una lletra segueix el joc sino es torna a preguntar.
             if (!Character.isLetter(lletra[0])) {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Error")
-                builder.setMessage(
-                    "Aquest caracter no es correcte.\n"
-                            + "Torna a probar."
-                )
-                builder.setPositiveButton("Aceptar", null)
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
+                alert("Error","Aquest caracter no es correcte.\nTorna a probar.")
             } else {
                 //Recorreix la array per comprobar si hi ha lletras que coincideixen.
                 var numAcerts = 0
@@ -199,7 +184,6 @@ class JocActivity : AppCompatActivity() {
                     .get()
                     .addOnSuccessListener { result ->
                         for (docu in result) {
-                            //Log.d(TAG, "${document.id} => ${document.data}")
                             if (docu.id.toString().equals(partida.toString())) {
                                 textpartida.setText(docu.id)
                                 intents.setText(docu.get("intents").toString())
@@ -207,22 +191,12 @@ class JocActivity : AppCompatActivity() {
                                 iniciar(docu)
 
                                 if (docu.get("intents").hashCode() as Int == 0) {
-                                    val builder = AlertDialog.Builder(this)
-                                    builder.setTitle("Failure")
-                                    builder.setMessage("Has perdut :( , la teva paraula era $paraula")
-                                    builder.setPositiveButton("Aceptar", null)
-                                    val dialog: AlertDialog = builder.create()
-                                    dialog.show()
+                                    alert("Failure","Has perdut :( , la teva paraula era $paraula")
                                     finalitzat(partida, "perdut")
                                 } else if (docu.get("acerts")
                                         .hashCode() as Int == ArraySep?.filter { it.isNotEmpty() }.size.hashCode()
                                 ) {
-                                    val builder = AlertDialog.Builder(this)
-                                    builder.setTitle("Win")
-                                    builder.setMessage("Has guanyat! :) , la paraula es $paraula")
-                                    builder.setPositiveButton("Aceptar", null)
-                                    val dialog: AlertDialog = builder.create()
-                                    dialog.show()
+                                    alert("Win","Has guanyat! :) , la paraula es $paraula")
                                     finalitzat(partida, "guanyat")
                                 }
                             }
@@ -274,6 +248,15 @@ class JocActivity : AppCompatActivity() {
                 print("Ta mal algo")
             }
         }
+    }
+
+    private fun alert(title : String,alert : String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(alert)
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
 }
