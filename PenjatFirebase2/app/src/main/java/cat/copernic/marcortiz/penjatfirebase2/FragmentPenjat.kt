@@ -48,7 +48,7 @@ class FragmentPenjat : AppCompatActivity() {
                 {
                     startActivity(nouIntent)
                 },
-                10000 // value in milliseconds
+                2000 // value in milliseconds
             )
         }
 

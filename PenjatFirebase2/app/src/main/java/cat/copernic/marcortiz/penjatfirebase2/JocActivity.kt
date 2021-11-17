@@ -4,19 +4,17 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_joc.*
-import android.provider.SyncStateContract.Helpers.update
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import java.util.*
 import java.util.concurrent.ExecutionException
-import com.google.firestore.v1.WriteResult
 
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 
 
@@ -60,8 +58,8 @@ class JocActivity : AppCompatActivity() {
                     for (document in result) {
                         if (document.id.equals(partida)) {
                             //Log.d(TAG, "${document.id} => ${document.data}")
-                            joc(partida, document)
-                            iniciar(document)
+                            //joc(partida, document)
+                            newjoc(partida, document)
                             //Log.d("MainActivity", "${document.id} => ${document.data}")
                         }
                     }
@@ -80,7 +78,6 @@ class JocActivity : AppCompatActivity() {
     }
 
     private fun iniciar(document: DocumentSnapshot){
-        println("toy al iniciar1")
         var lletreambespai = ""
         val adivina = document.get("adivinar").toString() as String
         val paraula = document.get("paraula").toString() as String
@@ -92,13 +89,165 @@ class JocActivity : AppCompatActivity() {
                 lletreambespai += "_ "
             }
         }
-        println("toy al iniciar2")
         paraulatext.setText(lletreambespai.toString())
-        println("toy al iniciar3")
-        estrelles(document)
-        println("toy al iniciar4")
+        imagenes(document)
     }
 
+    public fun newjoc(partida: String, document: DocumentSnapshot) {
+        //Iniciar si es te que iniciar algun valor
+
+        //Primer fer comprovacio de la lletra
+        //Depenent del tipus de lletra if si es valida else no
+
+        //Si es valida s'actualitzan valors acerts +1
+
+        //Si es negativa s'actualitzen valors intents -1
+
+        //Ultim actualitzar els valors per comprovació
+
+        //Comprovació si has guanyat , perdut o pots seguir
+
+        var lletreambespai = ""
+        val adivina = document.get("adivinar").toString() as String
+        val paraula = document.get("paraula").toString() as String
+        val ArraySep = paraula.split("").toTypedArray()
+        val ArrayCon = arrayOfNulls<String>(ArraySep.size)
+
+        //Pregunta lletra.
+        val lletra: String = editLletra.text.toString()
+
+        for (i in ArraySep.indices) {
+            if (adivina.toString().contains(ArraySep[i].toString())) {
+                lletreambespai += ArraySep[i].toString() + " "
+                ArrayCon[i] = ArraySep[i].toString()
+            } else {
+                lletreambespai += "_ "
+                ArrayCon[i] = "_"
+            }
+        }
+        paraulatext.setText(lletreambespai.toString())
+        imagenes(document)
+
+        var rep = false
+        //Comproba que ya esta posada o no a l'array
+        for (x in ArrayCon.indices) {
+            if (ArrayCon[x].toString().contains(lletra.toString())) {
+                rep = true
+            }
+        }
+
+        var checko = false
+
+        if (rep) {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Error")
+            builder.setMessage("Aquest caracter ja l'has posat")
+            builder.setPositiveButton("Aceptar", null)
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else {
+            //Si es una lletra segueix el joc sino es torna a preguntar.
+            if (!Character.isLetter(lletra[0])) {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Error")
+                builder.setMessage(
+                    "Aquest caracter no es correcte.\n"
+                            + "Torna a probar."
+                )
+                builder.setPositiveButton("Aceptar", null)
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            } else {
+                //Recorreix la array per comprobar si hi ha lletras que coincideixen.
+                var numAcerts = 0
+                for (x in ArraySep.indices) {
+                    if (ArraySep[x].toString().contains(lletra.toString())) {
+                        numAcerts += 1
+                        ArrayCon[x] = lletra.toString()
+                        checko = true
+                    }
+                }
+
+                db.collection("jocs")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (doc in result) {
+                            if (doc.id.equals(partida)) {
+                                updateData(
+                                    partida.toString(),
+                                    doc.get("intents").hashCode() as Int,
+                                    doc.get("acerts").hashCode() + numAcerts,
+                                    doc.get("adivinar")
+                                        .toString() + lletra.toString()
+                                )
+                                intents.setText(doc.get("intents").toString())
+                                acerts.setText(doc.get("acerts").toString())
+                            }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents.", exception)
+                    }
+            }
+            //Si no coincideix ninguna lletra et treu un intent.
+            if (!checko) {
+                imagenes(document)
+                updateData(
+                    partida.toString(),
+                    document.get("intents").hashCode() as Int - 1,
+                    document.get("acerts").hashCode(),
+                    document.get("adivinar").toString() + lletra.toString()
+                )
+                intents.setText(document.get("intents").toString())
+                acerts.setText(document.get("acerts").toString())
+                //paraulatext.setText(lletreambespai.toString())
+            }
+
+        }
+        Handler().postDelayed(
+            {
+                db.collection("jocs")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (docu in result) {
+                            //Log.d(TAG, "${document.id} => ${document.data}")
+                            if (docu.id.toString().equals(partida.toString())) {
+                                textpartida.setText(docu.id)
+                                intents.setText(docu.get("intents").toString())
+                                acerts.setText(docu.get("acerts").toString())
+                                iniciar(docu)
+
+                                if (docu.get("intents").hashCode() as Int == 0) {
+                                    val builder = AlertDialog.Builder(this)
+                                    builder.setTitle("Failure")
+                                    builder.setMessage("Has perdut :( , la teva paraula era $paraula")
+                                    builder.setPositiveButton("Aceptar", null)
+                                    val dialog: AlertDialog = builder.create()
+                                    dialog.show()
+                                    finalitzat(partida, "perdut")
+                                } else if (docu.get("acerts")
+                                        .hashCode() as Int == ArraySep?.filter { it.isNotEmpty() }.size.hashCode()
+                                ) {
+                                    val builder = AlertDialog.Builder(this)
+                                    builder.setTitle("Win")
+                                    builder.setMessage("Has guanyat! :) , la paraula es $paraula")
+                                    builder.setPositiveButton("Aceptar", null)
+                                    val dialog: AlertDialog = builder.create()
+                                    dialog.show()
+                                    finalitzat(partida, "guanyat")
+                                }
+                            }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents.", exception)
+                    }
+            },
+            2000 // value in milliseconds
+        )
+    }
+
+    /*
     @Throws(InterruptedException::class, ExecutionException::class)
     fun joc(partida: String, document: DocumentSnapshot) {
         var nomp: String?
@@ -194,12 +343,12 @@ class JocActivity : AppCompatActivity() {
                             )
                             intents.setText(document.data?.get("intents")?.toString())
                             acerts.setText(document.data?.get("acerts")?.toString())
-                            paraulatext.setText(lletreambespai.toString())
+                            //paraulatext.setText(lletreambespai.toString())
                         }
                     }
                     //Si no coincideix ninguna lletra et treu un intent.
                     if (!check) {
-                        estrelles(document)
+                        imagenes(document)
                         updateData(
                             nomp.toString(),
                             document.get("intents").hashCode() as Int - 1,
@@ -208,12 +357,12 @@ class JocActivity : AppCompatActivity() {
                         )
                         intents.setText(document.data?.get("intents")?.toString())
                         acerts.setText(document.data?.get("acerts")?.toString())
-                        paraulatext.setText(lletreambespai.toString())
+                        //paraulatext.setText(lletreambespai.toString())
                     }
                 }
             }
         }
-    }
+    }*/
 
     //Finalitza la partida a la base de dades
     fun finalitzat(nomp: String?, estat: String) {
@@ -228,7 +377,7 @@ class JocActivity : AppCompatActivity() {
     @Throws(InterruptedException::class, ExecutionException::class)
     private fun updateData(id: String?, intents: Int, acerts: Int, adivina: String) {
         val docRef = db.collection("jocs").document(id!!)
-        val data: MutableMap<String, Any> = HashMap()
+        val data: MutableMap<String,Any> = HashMap()
         data["acerts"] = acerts
         data["intents"] = intents
         data["adivinar"] = adivina
@@ -239,7 +388,7 @@ class JocActivity : AppCompatActivity() {
         imageView.setImageResource(resource)
     }
 
-    private fun estrelles(result : DocumentSnapshot){
+    private fun imagenes(result : DocumentSnapshot){
         when (result.get("intents").toString().toInt()) {
             0 -> {setImageViewResource(imageView, R.drawable.ahorcado_8_png)}
             1 -> {setImageViewResource(imageView, R.drawable.ahorcado_7_png)}
