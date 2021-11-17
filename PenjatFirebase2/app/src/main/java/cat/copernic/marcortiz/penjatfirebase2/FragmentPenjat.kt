@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -37,19 +38,7 @@ class FragmentPenjat : AppCompatActivity() {
         buttonN.setOnClickListener{
             partida = editpartida.text.toString()
 
-            create(partida,"marc")
-            println("Partida echa")
-
-            val nouIntent : Intent = Intent(this,JocActivity::class.java).apply {
-                putExtra("email",email)
-                putExtra("partida",partida)
-            }
-            Handler().postDelayed(
-                {
-                    startActivity(nouIntent)
-                },
-                2000 // value in milliseconds
-            )
+            create(partida,"marc",partida.toString(),email.toString())
         }
 
         buttonA.setOnClickListener{
@@ -86,24 +75,65 @@ class FragmentPenjat : AppCompatActivity() {
 
     //Crea una nova partida a la base de dades
     @Throws(InterruptedException::class, ExecutionException::class)
-    private fun create(id: String?, usuari: String?) {
-        db.collection("plantilla").document("penjat")
+    private fun create(id: String?, usuari: String?,partida : String,email : String) {
+        db.collection("jocs")
             .get()
-            .addOnSuccessListener { result ->
-                val docRef: DocumentReference = db.collection("jocs").document(id?:"")
-                val data: MutableMap<String, Any?> = HashMap()
-                data["acerts"] = result["acerts"].hashCode()
-                data["adivinar"] = ""
-                data["intents"] = result["intents"].hashCode()
-                data["paraula"] = paraulaRandom(result["paraules"].toString()).toString()
-                data["state"] = false
-                data["estatjoc"] = ""
-                data["usuari"] = usuari?:""
-                docRef.set(data)
+            .addOnSuccessListener { doc ->
+                var bol = false
+                for (i in doc){
+                    println("Primera "+i.id)
+                    println("Primera "+editpartida.text.toString())
+                    if (i.id.toString().equals(editpartida.text.toString())){
+                        bol = true
+                    }
+                }
+                println("Segona "+bol)
+                if(!bol){
+                    db.collection("plantilla").document("penjat")
+                        .get()
+                        .addOnSuccessListener { result ->
+                            val docRef: DocumentReference = db.collection("jocs").document(id?:"")
+                            val data: MutableMap<String, Any?> = HashMap()
+                            data["acerts"] = result["acerts"].hashCode()
+                            data["adivinar"] = ""
+                            data["intents"] = result["intents"].hashCode()
+                            data["paraula"] = paraulaRandom(result["paraules"].toString()).toString()
+                            data["state"] = false
+                            data["estatjoc"] = ""
+                            data["usuari"] = usuari?:""
+                            docRef.set(data)
+
+                            val nouIntent : Intent = Intent(this,JocActivity::class.java).apply {
+                                putExtra("email",email)
+                                putExtra("partida",partida)
+                            }
+                            Handler().postDelayed(
+                                {
+                                    startActivity(nouIntent)
+                                },
+                                1000
+                            )
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents.", exception)
+                        }
+                }
+                else{
+                    alert("Error","Aquesta partida ja esta feta")
+                }
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents.", exception)
             }
+    }
+
+    private fun alert(title : String,alert : String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(alert)
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
 }

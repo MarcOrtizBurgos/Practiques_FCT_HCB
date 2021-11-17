@@ -206,7 +206,7 @@ class JocActivity : AppCompatActivity() {
                         Log.w(TAG, "Error getting documents.", exception)
                     }
             },
-            2000 // value in milliseconds
+            1000
         )
     }
 
@@ -234,19 +234,17 @@ class JocActivity : AppCompatActivity() {
         imageView.setImageResource(resource)
     }
 
-    private fun imagenes(result : DocumentSnapshot){
+    private fun imagenes(result: DocumentSnapshot) {
         when (result.get("intents").toString().toInt()) {
-            0 -> {setImageViewResource(imageView, R.drawable.ahorcado_8_png)}
-            1 -> {setImageViewResource(imageView, R.drawable.ahorcado_7_png)}
-            2 -> {setImageViewResource(imageView, R.drawable.ahorcado_6_png)}
-            3 -> {setImageViewResource(imageView, R.drawable.ahorcado_5_png)}
-            4 -> {setImageViewResource(imageView, R.drawable.ahorcado_4_png)}
-            5 -> {setImageViewResource(imageView, R.drawable.ahorcado_3_png)}
-            6 -> {setImageViewResource(imageView, R.drawable.ahorcado_2_png)}
-            7 -> {setImageViewResource(imageView, R.drawable.ahorcado_1_png)}
-            else -> { // Note the block
-                print("Ta mal algo")
-            }
+            0 -> setImageViewResource(imageView, R.drawable.ahorcado_8_png)
+            1 -> setImageViewResource(imageView, R.drawable.ahorcado_7_png)
+            2 -> setImageViewResource(imageView, R.drawable.ahorcado_6_png)
+            3 -> setImageViewResource(imageView, R.drawable.ahorcado_5_png)
+            4 -> setImageViewResource(imageView, R.drawable.ahorcado_4_png)
+            5 -> setImageViewResource(imageView, R.drawable.ahorcado_3_png)
+            6 -> setImageViewResource(imageView, R.drawable.ahorcado_2_png)
+            7 -> setImageViewResource(imageView, R.drawable.ahorcado_1_png)
+            else -> alert("Error", "Error de imagen")
         }
     }
 
