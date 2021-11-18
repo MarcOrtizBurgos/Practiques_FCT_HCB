@@ -3,25 +3,17 @@ package cat.copernic.marcortiz.penjatfirebase2
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_penjat.*
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 import java.util.*
-import java.util.Arrays.asList
 import java.util.concurrent.ExecutionException
 import kotlin.collections.HashMap
-import kotlin.math.log
-
 
 class FragmentPenjat : AppCompatActivity() {
 
@@ -37,16 +29,35 @@ class FragmentPenjat : AppCompatActivity() {
 
         buttonN.setOnClickListener {
             partida = editpartida.text.toString()
-            create(partida, "marc", partida.toString(), email.toString())
+            create(partida, email.toString(), partida.toString(), email.toString())
         }
 
         buttonA.setOnClickListener {
             partida = editpartida.text.toString()
-            val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
-                putExtra("email", email)
-                putExtra("partida", partida)
-            }
-            startActivity(nouIntent)
+            db.collection("jocs")
+                .get()
+                .addOnSuccessListener { doc ->
+                    var bol = false
+                    for (i in doc) {
+                        if (i.id.toString().equals(editpartida.text.toString()) && i.get("state")
+                                .toString().equals("false")
+                        ) {
+                            bol = true
+                        }
+                    }
+                    if (bol) {
+                        val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
+                            putExtra("email", email)
+                            putExtra("partida", partida)
+                        }
+                        startActivity(nouIntent)
+                    } else {
+                        alert("Error", "Aquesta partida ja esta finalitzada")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error getting documents.", exception)
+                }
         }
 
         setup(email ?: "")
@@ -94,7 +105,8 @@ class FragmentPenjat : AppCompatActivity() {
                             data["acerts"] = result["acerts"].hashCode()
                             data["adivinar"] = ""
                             data["intents"] = result["intents"].hashCode()
-                            data["paraula"] = paraulaRandom(result["paraules"].toString()).toString()
+                            data["paraula"] =
+                                paraulaRandom(result["paraules"].toString()).toString()
                             data["state"] = false
                             data["estatjoc"] = ""
                             data["usuari"] = usuari ?: ""

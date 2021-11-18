@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_green"
+    android:backgroundTint="@color/background_green">
 
     <TextView
         android:id="@+id/textUsuari"
@@ -14,7 +16,9 @@
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="103dp"
         android:text="@string/usuari"
-        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/editpartida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,21 +26,25 @@
 
     <Button
         android:id="@+id/buttonTanca"
-        android:layout_width="254dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="253dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="56dp"
+        android:backgroundTint="@color/design_default_color_error"
         android:text="@string/tanca"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonA" />
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonN"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="62dp"
+        android:backgroundTint="@color/background_ligth_green"
         android:text="@string/PartidaN"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/buttonA"
         app:layout_constraintEnd_toEndOf="@+id/buttonA"
         app:layout_constraintStart_toStartOf="@+id/buttonTanca"
@@ -46,8 +54,10 @@
         android:id="@+id/buttonA"
         android:layout_width="245dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="169dp"
+        android:layout_marginBottom="130dp"
+        android:backgroundTint="@color/background_ligth_green"
         android:text="@string/PartidaA"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/buttonTanca"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +72,8 @@
         android:hint="@string/nom_partida"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/buttonN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

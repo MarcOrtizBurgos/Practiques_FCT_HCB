@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_joc.*
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import java.util.*
 import java.util.concurrent.ExecutionException
@@ -33,9 +32,9 @@ class JocActivity : AppCompatActivity() {
 
         db.collection("jocs")
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { result -> //Inicia les dades del joc
                 for (document in result) {
-                    if (document.id.toString().equals(partida.toString())){
+                    if (document.id.toString().equals(partida.toString())) {
                         textpartida.setText(document.id)
                         intents.setText(document.get("intents").toString())
                         acerts.setText(document.get("acerts").toString())
@@ -47,7 +46,7 @@ class JocActivity : AppCompatActivity() {
                 Log.w(TAG, "Error getting documents.", exception)
             }
 
-        buttonEnvia.setOnClickListener{
+        buttonEnvia.setOnClickListener { //Inicia les comprovacions del joc al clicar
             db.collection("jocs")
                 .get()
                 .addOnSuccessListener { result ->
@@ -62,22 +61,23 @@ class JocActivity : AppCompatActivity() {
                 }
         }
 
-        buttonTanca2.setOnClickListener{
+        buttonTanca2.setOnClickListener { //Tanca la sessió
             FirebaseAuth.getInstance().signOut()
             moveTaskToBack(true)
-            val mainIntent : Intent = Intent(this,MainActivity::class.java)
+            val mainIntent: Intent = Intent(this, MainActivity::class.java)
             startActivity(mainIntent)
         }
     }
 
-    private fun iniciar(document: DocumentSnapshot){
+    //Inicia els valors visualment
+    private fun iniciar(document: DocumentSnapshot) {
         var lletreambespai = ""
         val adivina = document.get("adivinar").toString() as String
         val paraula = document.get("paraula").toString() as String
         val ArraySep = paraula.split("").toTypedArray()
         for (i in ArraySep.indices) {
             if (adivina.toString().contains(ArraySep[i].toString())) {
-                lletreambespai += ArraySep[i].toString()+" "
+                lletreambespai += ArraySep[i].toString() + " "
             } else {
                 lletreambespai += "_ "
             }
@@ -127,11 +127,11 @@ class JocActivity : AppCompatActivity() {
         var checko = false
 
         if (rep) {
-            alert("Error","Aquest caracter ja l'has posat")
+            alert("Error", "Aquest caracter ja l'has posat")
         } else {
             //Si es una lletra segueix el joc sino es torna a preguntar.
             if (!Character.isLetter(lletra[0])) {
-                alert("Error","Aquest caracter no es correcte.\nTorna a probar.")
+                alert("Error", "Aquest caracter no es correcte.\nTorna a probar.")
             } else {
                 //Recorreix la array per comprobar si hi ha lletras que coincideixen.
                 var numAcerts = 0
@@ -146,7 +146,7 @@ class JocActivity : AppCompatActivity() {
                 db.collection("jocs")
                     .get()
                     .addOnSuccessListener { result ->
-                        for (doc in result) {
+                        for (doc in result) { //Si coincideix amb una lletra et posa un acert.
                             if (doc.id.equals(partida)) {
                                 updateData(
                                     partida.toString(),
@@ -189,15 +189,18 @@ class JocActivity : AppCompatActivity() {
                                 intents.setText(docu.get("intents").toString())
                                 acerts.setText(docu.get("acerts").toString())
                                 iniciar(docu)
-
-                                if (docu.get("intents").hashCode() as Int == 0) {
-                                    alert("Failure","Has perdut :( , la teva paraula era $paraula")
+                                if (docu.get("intents").hashCode() as Int == 0) { //Comprovació de que has perdut
+                                    alert("Failure", "Has perdut :( , la teva paraula era $paraula")
                                     finalitzat(partida, "perdut")
-                                } else if (docu.get("acerts")
+                                    buttonEnvia.setEnabled(false)
+                                    editLletra.setEnabled(false)
+                                } else if (docu.get("acerts") //Comprovació de que has guanyat
                                         .hashCode() as Int == ArraySep?.filter { it.isNotEmpty() }.size.hashCode()
                                 ) {
-                                    alert("Win","Has guanyat! :) , la paraula es $paraula")
+                                    alert("Win", "Has guanyat! :) , la paraula es $paraula")
                                     finalitzat(partida, "guanyat")
+                                    buttonEnvia.setEnabled(false)
+                                    editLletra.setEnabled(false)
                                 }
                             }
                         }
@@ -208,6 +211,7 @@ class JocActivity : AppCompatActivity() {
             },
             1000
         )
+        editLletra.text = null
     }
 
     //Finalitza la partida a la base de dades
@@ -223,32 +227,30 @@ class JocActivity : AppCompatActivity() {
     @Throws(InterruptedException::class, ExecutionException::class)
     private fun updateData(id: String?, intents: Int, acerts: Int, adivina: String) {
         val docRef = db.collection("jocs").document(id!!)
-        val data: MutableMap<String,Any> = HashMap()
+        val data: MutableMap<String, Any> = HashMap()
         data["acerts"] = acerts
         data["intents"] = intents
         data["adivinar"] = adivina
         docRef.update(data)
     }
 
-    fun setImageViewResource(imageView: ImageView, resource: Int) {
-        imageView.setImageResource(resource)
-    }
-
+    //Switch d'imatges del joc penjat
     private fun imagenes(result: DocumentSnapshot) {
         when (result.get("intents").toString().toInt()) {
-            0 -> setImageViewResource(imageView, R.drawable.ahorcado_8_png)
-            1 -> setImageViewResource(imageView, R.drawable.ahorcado_7_png)
-            2 -> setImageViewResource(imageView, R.drawable.ahorcado_6_png)
-            3 -> setImageViewResource(imageView, R.drawable.ahorcado_5_png)
-            4 -> setImageViewResource(imageView, R.drawable.ahorcado_4_png)
-            5 -> setImageViewResource(imageView, R.drawable.ahorcado_3_png)
-            6 -> setImageViewResource(imageView, R.drawable.ahorcado_2_png)
-            7 -> setImageViewResource(imageView, R.drawable.ahorcado_1_png)
-            else -> alert("Error", "Error de imagen")
+            0 -> imageView.setImageResource(R.drawable.ahorcado_8_png)
+            1 -> imageView.setImageResource(R.drawable.ahorcado_7_png)
+            2 -> imageView.setImageResource(R.drawable.ahorcado_6_png)
+            3 -> imageView.setImageResource(R.drawable.ahorcado_5_png)
+            4 -> imageView.setImageResource(R.drawable.ahorcado_4_png)
+            5 -> imageView.setImageResource(R.drawable.ahorcado_3_png)
+            6 -> imageView.setImageResource(R.drawable.ahorcado_2_png)
+            7 -> imageView.setImageResource(R.drawable.ahorcado_1_png)
+            else -> alert("Error", "Error d'imatge")
         }
     }
 
-    private fun alert(title : String,alert : String){
+    //Funcio per mostrar alerts
+    private fun alert(title: String, alert: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(alert)

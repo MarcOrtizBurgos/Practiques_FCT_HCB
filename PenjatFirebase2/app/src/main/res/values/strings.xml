@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PenjatFirebase2</string>
+    <string name="app_name">Penjat</string>
     <string name="benvingut">Benvingut al Penjat</string>
     <string name="usuari">Usuari</string>
     <string name="clau">Clau</string>
@@ -7,7 +7,7 @@
     <string name="registre">Registre</string>
     <string name="tanca">Tancar Sessió</string>
     <string name="PartidaN">Partida Nova</string>
-    <string name="PartidaA">Partida Antiga</string>
+    <string name="PartidaA">Recuperar Partida</string>
     <string name="intents"><b>Intents:</b></string>
     <string name="acerts"><b>Acerts:</b></string>
     <string name="paraules"><b>Paraula</b></string>
