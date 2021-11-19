@@ -102,7 +102,7 @@ class JocActivity : AppCompatActivity() {
         val ArrayCon = arrayOfNulls<String>(ArraySep.size)
 
         //Pregunta lletra.
-        val lletra: String = editLletra.text.toString()
+        val lletra: String = editLletra.text.toString().lowercase()
 
         for (i in ArraySep.indices) {
             if (adivina.toString().contains(ArraySep[i].toString())) {
