@@ -24,6 +24,12 @@
         <activity
             android:name=".FragmentPenjat"
             android:exported="false" />
+        <activity
+            android:name=".WinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RankingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

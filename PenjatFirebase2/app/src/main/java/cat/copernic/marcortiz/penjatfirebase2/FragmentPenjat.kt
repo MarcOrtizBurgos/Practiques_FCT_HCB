@@ -60,6 +60,11 @@ class FragmentPenjat : AppCompatActivity() {
                 }
         }
 
+        buttonR.setOnClickListener {
+            val nouIntent: Intent = Intent(this, RankingActivity::class.java).apply {}
+            startActivity(nouIntent)
+        }
+
         setup(email ?: "")
     }
 

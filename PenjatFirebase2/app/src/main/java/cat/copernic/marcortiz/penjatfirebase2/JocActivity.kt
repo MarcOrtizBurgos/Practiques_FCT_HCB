@@ -197,10 +197,12 @@ class JocActivity : AppCompatActivity() {
                                 } else if (docu.get("acerts") //Comprovació de que has guanyat
                                         .hashCode() as Int == ArraySep?.filter { it.isNotEmpty() }.size.hashCode()
                                 ) {
-                                    alert("Win", "Has guanyat! :) , la paraula es $paraula")
+                                    //alert("Win", "Has guanyat! :) , la paraula es $paraula")
                                     finalitzat(partida, "guanyat")
                                     buttonEnvia.setEnabled(false)
                                     editLletra.setEnabled(false)
+                                    val newinIntent: Intent = Intent(this, WinActivity::class.java)
+                                    startActivity(newinIntent)
                                 }
                             }
                         }

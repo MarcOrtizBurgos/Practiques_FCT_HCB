@@ -14,4 +14,8 @@
     <string name="lletra"><b>Escriu una lletra</b></string>
     <string name="enviar">Enviar</string>
     <string name="nom_partida">Nom partida</string>
+    <string name="has_guanyat">Has guanyat</string>
+    <string name="compartir">Compartir</string>
+    <string name="veure_ranking">Veure ranking</string>
+    <string name="ranking_penjat">Ranking Penjat</string>
 </resources>
