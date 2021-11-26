@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PenjatFirebase2">
         <activity
-            android:name=".JocActivity"
+            android:name=".ui.JocActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,13 +22,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FragmentPenjat"
+            android:name=".ui.FragmentPenjat"
             android:exported="false" />
         <activity
-            android:name=".WinActivity"
+            android:name=".ui.WinActivity"
             android:exported="false" />
         <activity
-            android:name=".RankingActivity"
+            android:name=".ui.FailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.RankingActivity"
             android:exported="false" />
     </application>
 

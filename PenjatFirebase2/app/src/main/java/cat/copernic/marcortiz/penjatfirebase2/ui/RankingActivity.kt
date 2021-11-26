@@ -1,12 +1,14 @@
-package cat.copernic.marcortiz.penjatfirebase2
+package cat.copernic.marcortiz.penjatfirebase2.ui
 
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import cat.copernic.marcortiz.penjatfirebase2.R
 import cat.copernic.marcortiz.penjatfirebase2.adapters.RankingAdapter
 import cat.copernic.marcortiz.penjatfirebase2.models.User
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_ranking.*
@@ -35,7 +37,8 @@ class RankingActivity : AppCompatActivity() {
     }
 
     private fun iniciador() {
-        db.collection("users")
+        val docRef = db.collection("users")
+        docRef.whereGreaterThan("punts", -1).orderBy("punts", Query.Direction.DESCENDING).limit(6)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {

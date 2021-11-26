@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     android:background="@color/background_ligth_green">
 
+    <TextView
+        android:id="@+id/textViewParaula1"
+        android:layout_width="322dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textViewPunts2"
+        android:layout_width="322dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewParaula1" />
+
     <Button
         android:id="@+id/buttonTanca3"
         android:layout_width="0dp"
@@ -19,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCompartir" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCompartir1" />
 
     <TextView
         android:id="@+id/textView4"
@@ -29,18 +51,18 @@
         android:layout_marginTop="55dp"
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="386dp"
-        android:text="@string/has_guanyat"
+        android:text="@string/has_perdut"
         android:textAlignment="center"
         android:textColor="#455A64"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCompartir"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCompartir1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonCompartir"
+        android:id="@+id/buttonCompartir1"
         android:layout_width="161dp"
         android:layout_height="0dp"
         android:layout_marginBottom="34dp"
@@ -63,25 +85,4 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:srcCompat="@mipmap/ic_penjat" />
 
-    <TextView
-        android:id="@+id/textViewParaula"
-        android:layout_width="322dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="28dp"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/textViewPunts"
-        android:layout_width="322dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewParaula" />
 </androidx.constraintlayout.widget.ConstraintLayout>

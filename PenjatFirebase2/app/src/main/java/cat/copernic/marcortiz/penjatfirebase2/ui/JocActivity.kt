@@ -1,4 +1,4 @@
-package cat.copernic.marcortiz.penjatfirebase2
+package cat.copernic.marcortiz.penjatfirebase2.ui
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_joc.*
 import androidx.appcompat.app.AlertDialog
+import cat.copernic.marcortiz.penjatfirebase2.R
 import java.util.*
 import java.util.concurrent.ExecutionException
 import com.google.firebase.firestore.DocumentSnapshot
@@ -18,13 +19,14 @@ import com.google.firebase.firestore.DocumentSnapshot
 class JocActivity : AppCompatActivity() {
 
     val db = Firebase.firestore
+    lateinit var email : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_joc)
 
         val bundle = intent.extras
-        val email = bundle?.getString("email")
+        email = bundle?.getString("email").toString()
         val partida = bundle?.getString("partida")
 
         title = "Joc"
@@ -191,17 +193,27 @@ class JocActivity : AppCompatActivity() {
                                 iniciar(docu)
                                 if (docu.get("intents").hashCode() as Int == 0) { //Comprovació de que has perdut
                                     alert("Failure", "Has perdut :( , la teva paraula era $paraula")
-                                    finalitzat(partida, "perdut")
+                                    finalitzat(partida, "perdut",0)
                                     buttonEnvia.setEnabled(false)
                                     editLletra.setEnabled(false)
+                                    val newinIntent: Intent = Intent(this, FailActivity::class.java).apply {
+                                        putExtra("user", email.split("@")[0])
+                                        putExtra("paraula", docu.get("paraula").toString())
+                                        putExtra("punts", docu.get("intents").toString())
+                                    }
+                                    startActivity(newinIntent)
                                 } else if (docu.get("acerts") //Comprovació de que has guanyat
                                         .hashCode() as Int == ArraySep?.filter { it.isNotEmpty() }.size.hashCode()
                                 ) {
                                     //alert("Win", "Has guanyat! :) , la paraula es $paraula")
-                                    finalitzat(partida, "guanyat")
+                                    finalitzat(partida, "guanyat",docu.get("intents").toString().toInt())
                                     buttonEnvia.setEnabled(false)
                                     editLletra.setEnabled(false)
-                                    val newinIntent: Intent = Intent(this, WinActivity::class.java)
+                                    val newinIntent: Intent = Intent(this, WinActivity::class.java).apply {
+                                        putExtra("user", email.split("@")[0])
+                                        putExtra("paraula", docu.get("paraula").toString())
+                                        putExtra("punts", docu.get("intents").toString())
+                                    }
                                     startActivity(newinIntent)
                                 }
                             }
@@ -217,12 +229,26 @@ class JocActivity : AppCompatActivity() {
     }
 
     //Finalitza la partida a la base de dades
-    fun finalitzat(nomp: String?, estat: String) {
+    fun finalitzat(nomp: String?, estat: String, punts : Int) {
         val docRef = db.collection("jocs").document(nomp!!)
         val data: MutableMap<String, Any> = HashMap()
         data["state"] = true
         data["estatjoc"] = estat
         docRef.update(data)
+
+        val docRef2 = db.collection("users").document(email!!)
+        docRef2.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val data2: Map<String, Any> = hashMapOf(
+                        "punts" to (document.get("punts").toString().toInt() + punts).toInt()
+                    )
+                    docRef2.update(data2)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 
     //Actualitza els resultats que hi ha al joc

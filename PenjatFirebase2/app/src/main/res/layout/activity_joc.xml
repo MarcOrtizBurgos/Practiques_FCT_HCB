@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_green"
     android:backgroundTint="@color/background_green"
-    tools:context=".JocActivity">
+    tools:context=".ui.JocActivity">
 
     <Button
         android:id="@+id/buttonTanca2"

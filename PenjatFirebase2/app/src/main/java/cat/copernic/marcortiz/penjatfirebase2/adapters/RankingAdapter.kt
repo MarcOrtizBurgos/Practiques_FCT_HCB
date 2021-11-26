@@ -18,10 +18,6 @@ class RankingAdapter(private val userList:ArrayList<User>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        /*
-        viewHolder.itemTitle.text = titles[i]
-        viewHolder.itemImage.setImageResource(R.drawable.ahorcado_8_png)
-        viewHolder.itemDetail.text = details[i]*/
         val user : User = userList[i]
         viewHolder.itemImage.setImageResource(R.drawable.ahorcado_8_png)
         viewHolder.itemTitle.text = user.name

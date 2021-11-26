@@ -1,4 +1,4 @@
-package cat.copernic.marcortiz.penjatfirebase2
+package cat.copernic.marcortiz.penjatfirebase2.ui
 
 import android.content.ContentValues
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import cat.copernic.marcortiz.penjatfirebase2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.fragment_penjat.*
@@ -74,7 +75,9 @@ class FragmentPenjat : AppCompatActivity() {
 
         buttonTanca.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            onBackPressed()
+            moveTaskToBack(true)
+            val mainIntent: Intent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
         }
     }
 
@@ -110,11 +113,10 @@ class FragmentPenjat : AppCompatActivity() {
                             data["acerts"] = result["acerts"].hashCode()
                             data["adivinar"] = ""
                             data["intents"] = result["intents"].hashCode()
-                            data["paraula"] =
-                                paraulaRandom(result["paraules"].toString()).toString()
+                            data["paraula"] = paraulaRandom(result["paraules"].toString()).toString()
                             data["state"] = false
                             data["estatjoc"] = ""
-                            data["usuari"] = usuari ?: ""
+                            data["usuari"] = usuari.toString().split("@")[0] ?: ""
                             docRef.set(data)
 
                             val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
