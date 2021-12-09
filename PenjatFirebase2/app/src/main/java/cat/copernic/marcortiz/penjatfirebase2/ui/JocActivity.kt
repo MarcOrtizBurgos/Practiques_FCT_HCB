@@ -315,17 +315,23 @@ class JocActivity : AppCompatActivity() {
     }
 
     private fun oneCharacter(lletra: String): Boolean {
-        return if (Character.isLetter(lletra[0])) {
-            val c = lletra[0].toString()
-            if (repeatedLetter(c)) {
-                Toast.makeText(this, getString(R.string.aquesta_lletra_ja_l_has_provat), Toast.LENGTH_SHORT).show()
+        return if(lletra.isNotEmpty())  {
+            if (Character.isLetter(lletra[0])){
+                if (repeatedLetter(lletra)) {
+                    Toast.makeText(this, getString(R.string.aquesta_lletra_ja_l_has_provat), Toast.LENGTH_SHORT).show()
+                    bool = false
+                    false
+                } else {
+                    bool = true
+                    true
+                }
+            }else{
+                Toast.makeText(this, getString(R.string.el_caracter_introduit_no_es_una_lletra), Toast.LENGTH_SHORT)
+                    .show()
                 bool = false
                 false
-            } else {
-                bool = true
-                true
             }
-        } else {
+        }else{
             Toast.makeText(this, getString(R.string.el_caracter_introduit_no_es_una_lletra), Toast.LENGTH_SHORT)
                 .show()
             bool = false
