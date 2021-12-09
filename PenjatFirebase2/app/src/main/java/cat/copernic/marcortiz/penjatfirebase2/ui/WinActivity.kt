@@ -24,10 +24,10 @@ class WinActivity : AppCompatActivity() {
         val user = bundle?.getString("user").toString()
         val paraula = bundle?.getString("paraula").toString()
         val punts = bundle?.getString("punts").toString()
-        val text = "Usuari: $user\nHe guanyat en el Penjat fet per Marc Ortiz Burgos\nLa paraula era $paraula"
+        val text = getString(R.string.he_guanyat_al_penjat_fet_per_marc, user, paraula)
 
-        textViewParaula.text = "La paraula era "+paraula
-        textViewPunts.text = "Punts: "+punts
+        textViewParaula.text = getString(R.string.paraula_era, paraula)
+        textViewPunts.text = getString(R.string.punts, punts)
 
         buttonCompartir.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)

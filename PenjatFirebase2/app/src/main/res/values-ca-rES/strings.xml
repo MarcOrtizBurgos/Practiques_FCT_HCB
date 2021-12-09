@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Penjat</string>
+    <string name="veure_ranking">Veure rànquing</string>
     <string name="benvingut">Benvingut al Penjat</string>
     <string name="usuari">Usuari</string>
     <string name="clau">Clau</string>
-    <string name="login">Login</string>
+    <string name="login">Inici de sessió</string>
     <string name="registre">Registre</string>
     <string name="tanca">Tancar Sessió</string>
     <string name="PartidaN">Partida Nova</string>
@@ -16,16 +18,11 @@
     <string name="nom_partida">Nom partida</string>
     <string name="has_guanyat">Has guanyat</string>
     <string name="compartir">Compartir</string>
-    <string name="veure_ranking">Veure rànquing</string>
+    <string name="ranking_penjat">Rànquing Penjat</string>
     <string name="has_perdut">Has perdut</string>
     <string name="has_oblidat_la_contrasenya">Has oblidat la contrasenya?</string>
     <string name="continuar">Continuar</string>
     <string name="repeteix_la_clau">Repeteix la clau</string>
-    <string-array name="array">
-        <item>Ordenat per punts</item>
-        <item>Ordenat per data</item>
-    </string-array>
-    <string name="ranking_penjat">Rànquing Penjat</string>
     <string name="paraula_era">La paraula era %1$s</string>
     <string name="punts">Punts: %1$s</string>
     <string name="penjat">Penjat</string>
@@ -46,16 +43,16 @@
     <string name="error_en_inici_de_sessio">Error en l\'inici de sessió</string>
     <string name="s_ha_produit_un_error_en_iniciar_sessio">S\'ha produït un error en intentar iniciar sessió</string>
     <string name="consideri_la_possibilitat_que_aquest_usuari_no_estigui_registrar">Consideri la possibilitat que aquest usuari no estigui registrat</string>
-    <string name="el_valor_introduit_en_el_camp_usuari_no_es_un_email">El valor introduit en el camp Ususari no és un correu electrònic</string>
+    <string name="el_valor_introduit_en_el_camp_usuari_no_es_un_email">El valor introduït en el camp Usuari no és un correu electrònic</string>
     <string name="els_camps_estan_buits">Els camps estan buits</string>
     <string name="falta_introduir_el_email">Falta introduir el correu electrònic.</string>
-    <string name="format_email_incorrecte">Format correu electronic incorrecte.</string>
-    <string name="falta_introduir_la_contrasenya">Falta introduir la contrasenya.\n</string>
-    <string name="la_contrasenya_ha_de_Ser_minim_de_sis_carcters">La contrasenya ha de ser mínim de 6 caracters\n</string>
-    <string name="he_guanyat_al_penjat_fet_per_marc">Usuari:  He guanyat en el Penjat fet per Marc Ortiz Burgos La paraula era %2$s</string>
-    <string name="he_perdut_al_penjat">Usuari: %1$s  He perdut en el Penjat fet per Marc Ortiz Burgos  La paraula era %1$s</string>
+    <string name="format_email_incorrecte">Format correu electrònic incorrecte.</string>
+    <string name="falta_introduir_la_contrasenya">Falta introduir la contrasenya.</string>
+    <string name="la_contrasenya_ha_de_Ser_minim_de_sis_carcters">La contrasenya ha de ser mínim de 6 caràcters</string>
+    <string name="he_guanyat_al_penjat_fet_per_marc">Usuari: %1$s He guanyat en el Penjat fet per Marc Ortiz Burgos La paraula era %2$s</string>
     <string name="s_ha_canbiar_la_contrasenya">S\'ha canviat la contrasenya</string>
-    <string name="L_usuari_no_esta_registrat">L\'usuari no està registrat"</string>
+    <string name="L_usuari_no_esta_registrat">L\'usuari no està registrat</string>
     <string name="falta_introduir_contrasenya_repetida">"Falta introduir la contrasenya repetida. "</string>
     <string name="les_contrasenyes_no_coincideixen">"Les contrasenyes no coincideixen. "</string>
+    <string name="he_perdut_al_penjat">Usuari: %1$s  He perdut en el Penjat fet per Marc Ortiz Burgos  La paraula era %1$s</string>
 </resources>

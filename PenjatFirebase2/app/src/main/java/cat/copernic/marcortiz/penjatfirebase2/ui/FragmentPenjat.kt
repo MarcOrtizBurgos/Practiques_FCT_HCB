@@ -48,12 +48,12 @@ class FragmentPenjat : AppCompatActivity() {
                     }
                     if (bol) {
                         val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
-                            putExtra("email", email)
-                            putExtra("partida", partida)
+                            putExtra(getString(R.string.error), email)
+                            putExtra(getString(R.string.partida), partida)
                         }
                         startActivity(nouIntent)
                     } else {
-                        alert("Error", "Aquesta partida ja esta finalitzada")
+                        alert(getString(R.string.error), getString(R.string.aquesta_partida_ja_esta_finalitzada))
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -70,7 +70,7 @@ class FragmentPenjat : AppCompatActivity() {
     }
 
     private fun setup(email: String) {
-        title = "Penjat"
+        title = getString(R.string.penjat)
         textUsuari.text = email
 
         buttonTanca.setOnClickListener {
@@ -117,6 +117,7 @@ class FragmentPenjat : AppCompatActivity() {
                             data["state"] = false
                             data["estatjoc"] = ""
                             data["usuari"] = usuari.toString().split("@")[0] ?: ""
+                            data["lletresProvades"] = ""
                             docRef.set(data)
 
                             val nouIntent: Intent = Intent(this, JocActivity::class.java).apply {
@@ -130,7 +131,7 @@ class FragmentPenjat : AppCompatActivity() {
                             Log.w(ContentValues.TAG, "Error getting documents.", exception)
                         }
                 } else {
-                    alert("Error", "Aquesta partida ja esta feta")
+                    alert( getString(R.string.error), getString(R.string.aquesta_partida_ja_esta_feta))
                 }
             }
             .addOnFailureListener { exception ->
@@ -142,7 +143,7 @@ class FragmentPenjat : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(alert)
-        builder.setPositiveButton("Aceptar", null)
+        builder.setPositiveButton(getString(R.string.acceptar), null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

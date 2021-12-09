@@ -8,6 +8,7 @@
     android:backgroundTint="@color/background_green"
     tools:context=".ui.JocActivity">
 
+
     <Button
         android:id="@+id/buttonTanca2"
         android:layout_width="254dp"

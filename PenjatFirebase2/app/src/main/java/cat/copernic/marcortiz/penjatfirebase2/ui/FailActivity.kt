@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.fragment_fail.*
 import kotlinx.android.synthetic.main.fragment_fail.buttonTanca3
 import kotlinx.android.synthetic.main.fragment_win.*
 
+
+
 class FailActivity : AppCompatActivity() {
 
     val db = Firebase.firestore
@@ -25,10 +27,10 @@ class FailActivity : AppCompatActivity() {
         val user = bundle?.getString("user").toString()
         val paraula = bundle?.getString("paraula").toString()
         val punts = bundle?.getString("punts").toString()
-        val text ="Usuari: $user\nHe perdut en el Penjat fet per Marc Ortiz Burgos\nLa paraula era $paraula"
+        val text = getString(R.string.he_perdut_al_penjat, user + paraula)
 
-        textViewParaula1.text = "La paraula era "+paraula
-        textViewPunts2.text = "Punts: "+punts
+        textViewParaula1.text = getString(R.string.paraula_era, paraula)
+        textViewPunts2.text = getString(R.string.punts, punts)
 
         buttonCompartir1.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)

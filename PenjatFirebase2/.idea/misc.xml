@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/drawable/ic_bandera_de_espa_a.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/drawable/ic_flag_of_catalonia.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/drawable/ic_flag_of_the_united_kingdom__3_5_.xml" value="0.2703125" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/activity_joc.xml" value="0.25" />
+        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/activity_recuperar_contrasenya.xml" value="0.4" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_fail.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_penjat.xml" value="0.25" />
-        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_ranking.xml" value="0.25" />
+        <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_ranking.xml" value="0.3691588785046729" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_registre.xml" value="0.25" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/fragment_win.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/User/Documents/GitHub/Practiques_FCT_HCB/PenjatFirebase2/app/src/main/res/layout/item_ranking.xml" value="0.25" />
