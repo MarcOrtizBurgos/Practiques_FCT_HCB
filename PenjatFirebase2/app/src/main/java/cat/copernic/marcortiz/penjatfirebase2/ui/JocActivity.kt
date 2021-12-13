@@ -53,7 +53,6 @@ class JocActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
             }
 
         buttonEnvia.setOnClickListener { //Inicia les comprovacions del joc al clicar
@@ -67,7 +66,6 @@ class JocActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
                 }
         }
 
@@ -128,10 +126,8 @@ class JocActivity : AppCompatActivity() {
 
         checko = false
 
-        println(lletresprovades)
         if (oneCharacter(lletra)) {
             lletresprovades += lletra[0]
-            println(lletresprovades)
             //Recorreix la array per comprobar si hi ha lletras que coincideixen.
             var numAcerts = 0
             for (x in ArraySep.indices) {
@@ -162,7 +158,6 @@ class JocActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
                 }
         }
         //Si no coincideix ninguna lletra et treu un intent.
@@ -240,7 +235,6 @@ class JocActivity : AppCompatActivity() {
                         }
                     }
                     .addOnFailureListener { exception ->
-                        Log.w(TAG, "Error getting documents.", exception)
                     }
             },
             1000
@@ -267,7 +261,6 @@ class JocActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
             }
     }
 

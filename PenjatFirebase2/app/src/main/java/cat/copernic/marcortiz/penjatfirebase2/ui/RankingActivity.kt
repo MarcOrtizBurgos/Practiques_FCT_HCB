@@ -88,7 +88,6 @@ class RankingActivity : AppCompatActivity() {
                 recyclerView.adapter = myAdapter
             }
             .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting documents.", exception)
             }
     }
 }

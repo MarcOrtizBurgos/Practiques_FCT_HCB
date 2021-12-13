@@ -57,7 +57,6 @@ class FragmentPenjat : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(ContentValues.TAG, "Error getting documents.", exception)
                 }
         }
 
@@ -128,14 +127,12 @@ class FragmentPenjat : AppCompatActivity() {
                             startActivity(nouIntent)
                         }
                         .addOnFailureListener { exception ->
-                            Log.w(ContentValues.TAG, "Error getting documents.", exception)
                         }
                 } else {
                     alert( getString(R.string.error), getString(R.string.aquesta_partida_ja_esta_feta))
                 }
             }
             .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting documents.", exception)
             }
     }
 

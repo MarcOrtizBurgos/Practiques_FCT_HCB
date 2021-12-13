@@ -30,8 +30,6 @@ class RecuperarContrasenya : AppCompatActivity() {
             ) {
                 val psswd = editClau.text.toString()
                 val email = editUsuari.text.toString()
-                println(psswd)
-                println(email)
                 changePassword(email, psswd)
             }
         }
